@@ -1,0 +1,629 @@
+{% extends 'base.html' %}
+
+
+
+  {% block content %}
+
+
+
+
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarTogglerDemo03" aria-controls="navbarTogglerDemo03" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+  <a class="navbar-brand" href="#">Baterias Al Toque</a>
+   <a class="navbar-brand" href="http://call.comunica7.com:8000/comunica7/dashboard/">Inicio</a>
+   <!-- <button type="button" class="btn btn-outline-danger"href="/colasIN/reporte"><a href="/colasIN/reporte">Generar Reporte</a></button> -->
+  
+<!-- Button trigger modal -->
+<form method="get">
+<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModalCenter" >
+  Generar reportes
+</button>
+
+<!-- Modal -->
+<div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLongTitle">Generando Reportes</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        
+
+
+        <form>
+          <div class="form-group">
+            <label for="exampleFormControlInput1">Fecha Inicio</label>
+            <input type="date" class="form-control" id="exampleFormControlInput1" name="fecha_inicio" placeholder="name@example.com">
+          </div>
+
+          <div class="form-group">
+            <label for="exampleFormControlInput1">Fecha fin</label>
+            <input type="date" class="form-control" id="exampleFormControlInput1" name="fecha_fin" placeholder="name@example.com">
+          </div>
+         
+         
+          
+        </form>
+
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+        <button type="button" class="btn btn-secondary" onchange='trae_fecha()'>Generar Reporte</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+</form>
+
+
+  <div class="collapse navbar-collapse" id="navbarTogglerDemo03">
+    <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
+      <!-- <li class="nav-item active">
+        <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="#">Link</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link disabled" href="#" tabindex="-1" aria-disabled="true">Disabled</a>
+      </li> -->
+    </ul>
+    <form class="form-inline my-2 my-lg-0">
+   
+       <!-- <a class="navbar-brand" href="#">Salir</a>
+        <a class="navbar-brand" href="#">Salir</a>
+         <a class="navbar-brand" href="#">Salir</a> -->
+          <!-- <a class="navbar-brand" href="http://call.comunica7.com:8000/comunica7/dashboard/">Inicio</a>
+            <a class="btn btn-light" href='/comunica7/ingresar'>Salir</a> -->
+    </form>
+  </div>
+</nav>
+<script type="text/javascript" src="/static/ws4.js"></script>
+
+<script type="text/javascript">
+
+     var ws4redis = WS4Redis({
+      uri: '{{ WEBSOCKET_URI }}foobar?subscribe-user',
+      receive_message: receiveMessage,
+      heartbeat_msg: {{ WS4REDIS_HEARTBEAT }}
+    });
+
+    function receiveMessage(msg) {
+
+        audio=''
+
+        if(msg.split('-')[2]){
+
+          audio = msg.split('-')[2]
+
+        }
+
+
+        
+
+          if(msg.split('-')[0]=='llamada'){
+
+
+
+              window.location.href = "/colasIN/monitor_agente/"+msg.split('-')[1]+'/0?audio='+audio
+
+      
+        }
+       
+
+    }
+
+
+    function nuevaventa(url){
+
+
+        console.log('{{telefono}}')
+
+        var strWindowFeatures = "location=yes,height=800,width=1300,scrollbars=yes,status=yes";
+        var URL = url ;
+        var win = window.open(URL+'?telefono_1='+'{{telefono}}&audio='+'{{audio}}', "_blank", strWindowFeatures);
+
+
+    }
+
+    function traeaudios(url,id,agente){
+
+
+        console.log('agente...',agente)
+
+        var strWindowFeatures = "location=yes,top=300,left=200,height=500,width=800,scrollbars=yes,status=yes";
+        var URL = url ;
+        var win = window.open(URL+'?id='+id+'&agente='+agente, "_blank", strWindowFeatures);
+
+
+    }
+
+
+</script>
+
+<style>
+
+    body,th,td{
+      font-size:13px;
+    }
+
+
+    .cajita{
+      background: #fff;
+      padding: 6px;
+      color: #234;border:1px solid #234;
+      margin-bottom: 10px;
+    }
+
+      .discador{
+    
+        top: 5px;
+        right: 20px;
+        background: #1086fb;
+        transition:all .5s;
+        height: 250px;
+        z-index: 1000;
+        width:120px;
+        padding-top: 20px;
+        border-radius:10px;
+
+       
+        color:#fff;
+        text-align: center;
+        
+       
+        background: #1086fb;
+        transition:all .5s;
+        width:140px;
+    }
+    
+      
+    
+
+    .discador img{
+
+      width: 40px;
+
+      cursor:pointer;
+    }
+
+    .Pausa{
+
+      background: #ffee06;
+    }
+
+    .Disponible{
+
+      background: #38d84f;
+
+    }
+
+    .Gestion{
+
+      background: #dbe045;
+
+    }
+
+    .Llamada{
+
+      
+      color:#fff;
+
+      background: #1086fb;
+
+    }
+
+   
+
+    .discador:hover .cajita{
+
+    
+    border: 1px solid #1086fb;
+
+
+    }
+    
+    
+    
+      
+    </style>
+
+
+
+
+<div style='height: 20px'></div>
+<div class='container-fluid'>
+
+
+  <div class='{{agente.estado.nombre}} estiloCuadro ' id="cuadro" >
+
+
+    <img src='/static/callcenter.png'>
+
+  
+    
+    <h6>{{agente.nombre}} </h6>
+
+    <center><div class="numberCircle">{{agente.acd}} </div></center>
+
+
+    {% if agente.estado.nombre == 'Pausa' or agente.estado.nombre == 'Disponible' or agente.estado.nombre == 'Gestion'   %}
+
+    <div style="padding:20px;">
+
+      {% if agente.estado.nombre == 'Pausa' %}
+
+      <a class='btn btn-light' href='/colasIN/disponible/{{agente.id}}'>
+          Disponible
+      </a>
+
+      {% endif %}
+
+       {% if agente.estado.nombre == 'Disponible' %}
+
+
+
+
+        <a class='btn btn-light' href='/colasIN/pausar/{{agente.id}}'>
+        Pausar
+        </a>
+
+      {% endif %}
+
+       {% if agente.estado.nombre == 'Gestion' %}
+
+
+        Gestion
+
+        <a class='btn btn-light' href='/colasIN/disponible/{{agente.id}}'>
+          Disponible
+      </a>
+
+      {% endif %}
+
+    </div>
+
+     <a class="btn btn-light" href='/colasIN/salir'>Salir</a>
+
+      
+
+    {% else %}
+
+    <div style="height:20px;"></div>
+
+    <img src='/static/llamada.png'>
+    <br>
+
+    <h6>En Llamada</h6>
+
+   <br>
+   <a class='btn btn-light' href='/colasIN/disponible/{{agente.id}}'>
+          Disponible
+      </a>
+
+
+  
+    
+    {% endif %}
+
+    
+
+  </div>
+
+
+  
+
+    {% if agente.estado.nombre == 'Pausa' or agente.estado.nombre == 'Disponible' or agente.estado.nombre == 'Gestion'   %}
+
+    <h6>Estado Actual </h6>
+    <h4>{{agente.estado.nombre}}</h4>
+
+    {% else %}
+
+
+    <h5>Llamada entrante...{{telefono}} </h5>
+
+
+
+
+
+    {% endif %}
+
+  
+
+
+           <!-- Button trigger modal -->
+           
+
+            <div class="btn-group" role="group" aria-label="Basic example">
+
+                <button type="button" class="btn btn-dark" data-toggle="modal" data-target="#exampleModal">
+                  Buscar Venta
+                </button>
+                <a onclick="nuevaventa('/colasIN/dashboard')" target="_blank"  class="btn btn-primary" style='color:#fff;'>Crear Nueva Venta</a>
+
+
+            </div>
+
+   
+       
+        <style>
+
+
+
+
+              .numberCircle {
+                      width: 40px;
+                      line-height: 32px;
+                      border-radius: 50%;
+                      text-align: center;
+                      font-size: 18px;
+                      border: 4px solid #fff;
+                      text-align: center;
+                      color: #fff;
+              }
+               .estiloCuadro {
+               width: 10em;
+              /* border: solid red; */
+              position: absolute;
+              top: 10px;
+              right: 20px;
+              cursor: pointer;
+              box-shadow: 2px 3px 11px 2px #98abbd;
+              border-radius: 6px;
+              
+              text-align: center;
+              z-index: 1000;
+                  opacity: .7;
+               /*Deshabilitar selección de texto*/
+               -moz-user-select: none;     /* Mozilla */
+               -khtml-user-select: none;   /* Chrome */    
+               -o-user-select: none;       /* Opera */
+               padding-top: 16px;
+               padding-bottom: 17px;
+            }
+        </style>
+        <script type="text/javascript">
+            var xInic, yInic;
+            var estaPulsado = false;
+            
+            function ratonPulsado(evt) { 
+                //Obtener la posición de inicio
+                xInic = evt.clientX;
+                yInic = evt.clientY;    
+                estaPulsado = true;
+                //Para Internet Explorer: Contenido no seleccionable
+                document.getElementById("cuadro").unselectable = true;
+            }
+            
+            function ratonMovido(evt) {
+                if(estaPulsado) {
+                    //Calcular la diferencia de posición
+                    var xActual = evt.clientX;
+                    var yActual = evt.clientY;    
+                    var xInc = xActual-xInic;
+                    var yInc = yActual-yInic;
+                    xInic = xActual;
+                    yInic = yActual;
+                    
+                    //Establecer la nueva posición
+                    var elemento = document.getElementById("cuadro");
+                    var position = getPosicion(elemento);
+                    elemento.style.top = (position[0] + yInc) + "px";
+                    elemento.style.left = (position[1] + xInc) + "px";
+                }
+            }
+            
+            function ratonSoltado(evt) {
+                estaPulsado = false;
+            }
+            
+            /*
+             * Función para obtener la posición en la que se encuentra el
+             * elemento indicado como parámetro.
+             * Retorna un array con las coordenadas x e y de la posición
+             */
+            function getPosicion(elemento) {
+                var posicion = new Array(2);
+                if(document.defaultView && document.defaultView.getComputedStyle) {
+                    posicion[0] = parseInt(document.defaultView.getComputedStyle(elemento, null).getPropertyValue("top"))
+                    posicion[1] = parseInt(document.defaultView.getComputedStyle(elemento, null).getPropertyValue("left"));
+                } else {
+                    //Para Internet Explorer
+                    posicion[0] = parseInt(elemento.currentStyle.top);             
+                    posicion[1] = parseInt(elemento.currentStyle.left);               
+                }      
+                return posicion;
+            }
+        </script>
+   
+
+        <script type="text/javascript">
+            var el = document.getElementById("cuadro");
+            if (el.addEventListener){
+                el.addEventListener("mousedown", ratonPulsado, false);
+                el.addEventListener("mouseup", ratonSoltado, false);
+                document.addEventListener("mousemove", ratonMovido, false);
+            } else { //Para IE
+                el.attachEvent('onmousedown', ratonPulsado);
+                el.attachEvent('onmouseup', ratonSoltado);
+                document.attachEvent('onmousemove', ratonMovido);
+            }            
+        </script>  
+
+
+
+
+
+
+            <!-- Modal -->
+            <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+              <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <form method='GET' action='/colasIN/monitor_agente/0/0'>
+                    <div class="modal-header">
+                      <h5 class="modal-title" id="exampleModalLabel">Buscar Registro</h5>
+                      <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                      </button>
+                    </div>
+
+
+                    <form method="GET">
+
+
+                    <div class="modal-body">
+                      <!--<input class='form-control' placeholder='Telefono' name='numero'>-->
+
+                        
+
+   
+                          <div class='row'>
+
+                          {% for field in busqueda.visible_fields %}
+
+                          
+                          <div class="col-md-12">
+                                
+                                    {{ field.errors }}
+                                    {{ field.label_tag }} {{ field }}
+                            </div>
+                          
+                          {% endfor %}
+                         
+                          </div>
+                          
+
+                            
+
+                      
+
+
+
+                    </div>
+
+                   
+
+                    
+                    <div class="modal-footer">
+                      <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+                      <button  type="submit" class="btn btn-primary" >Buscar</button>
+                    </div>
+    
+                    </form>
+                </div>
+              </div>
+            </div>
+
+
+          
+
+            {% include "colasIN/gestion.html" %}
+
+            {% if total_llamadas %}
+
+            <h5>Historial de Todas las Ventas</h5>
+
+            <table class="table table-default responsive">
+                <thead>
+                      <tr>
+                      <th scope="col">Fecha</th>
+                      <th scope="col">Nombre</th>
+                      <th scope="col">Telefono</th>
+                      <!--<th scope="col">DNI</th>-->
+                      <th scope="col">Razon Social</th>
+                      <th scope="col">Status</th>
+                      <th scope="col">Marca</th>
+                      <th scope="col">Modelo</th>
+
+                      <th scope="col">Año</th>
+                      <!--<th scope="col">Placa</th>-->
+                      <th scope="col">Marca Bat.</th>
+                      <th scope="col">Modelo Bat.</th>
+
+
+                      <th scope="col">Precio</th>
+                      <th scope="col">Descuento</th>
+                      <th scope="col">Direccion</th>
+                      <th>Audio</th>
+                      <th>Accion</th>
+                      <th></th>
+                      </tr>
+                </thead>
+                <tbody>
+
+                {% for c in total_llamadas %}
+                        {% if c.cierre %}
+        
+                          <tr style='background: #dde3e8;
+                      color: #585252;'>
+
+                          {% else %}
+
+                          <tr>
+
+                          {% endif %}
+
+                        <td>{{c.fecha_atencion}}</td>
+                        <td>{{c.nombre_completo }}</td>
+                        <td><a style='color:#67da75;' target="_blank" href='https://wa.me/51{{c.telefono_1}}?text=Hola'>{{c.telefono_1 }}</a></td>
+                        <!--<td>{{c.dni }}</td>-->
+                        <td>{{c.razon_social}}</td>
+                        <td>{{c.status}}</td>
+                        <td>{{c.marca_vehiculo}}</td>
+                        <td>{{c.modelo}}</td>
+
+                        <td>{{c.anio}}</td>
+                        <!--<td>{{c.placa}}</td>-->
+                        <td>{{c.marca_producto}}</td>
+                        <td>{{c.modelo_bateria}}</td>
+                        
+                        <td>{{c.precio}}</td>
+                        <td>{{c.descuento}}</td>
+
+                        
+                        <td><a class='btn btn-sm btn-dark' href='https://www.google.com/maps/search/{{c.direccion_atencion}}' target="_blank">Ir</a></td>
+
+                        <td>
+
+
+                        
+
+                        <a class='btn btn-sm btn-primary' onclick="traeaudios('/colasIN/traeaudios/{{c.telefono_1}}',{{c.id}},{{c.agente.id}})" target="_blank" style='color:#fff;'>Audios #{{c.audios}}</a>
+
+                        </td>
+                        <td>
+
+
+                        
+                         <a class='btn btn-sm btn-light' onclick="nuevaventa('/colasIN/detalle_venta/{{c.id}}')" target="_blank">Detalle</a>
+
+                        </td>
+
+                        <td>
+                         <a class='btn btn-sm btn-light' onclick="nuevaventa('/colasIN/nueva_venta/{{c.id}}')" target="_blank">Nueva Venta</a></td>
+
+
+                        </tr>
+
+                {% endfor %}
+
+                </tbody>
+            </table>
+
+            {% else %}
+
+              <h5>No hay registros para este numero</h5>
+
+            {% endif %}
+
+
+    </div>
+
+  {% endblock %}
